@@ -193,9 +193,10 @@ class Sandboxie(object):
                 # more.
                 command = '| more'
 
-        start_exe = os.path.join(self.install_dir, 'Start.exe')
+        start_exe = '"' + os.path.join(self.install_dir, 'Start.exe') + '"'
         command = command or ''
-        return self._shell_output([start_exe] + options + [command])
+
+        return self._shell_output(' '.join([start_exe] + options + [command]))
 
     def reload_config(self, **kwargs):
         """Reloads the Sandboxie.ini config."""
@@ -205,7 +206,7 @@ class Sandboxie(object):
         """Deletes the contents of sandbox *box*. If *box* is ``None``,
         ``self.defaultbox`` is used.
         """
-        self.start('delete_sandbox_silent', box=None, **kwargs)
+        self.start('delete_sandbox_silent', box=box, **kwargs)
 
     def terminate_processes(self, box=None, **kwargs):
         """Terminates all processes running in sandbox *box* If *box* is

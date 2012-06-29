@@ -14,8 +14,11 @@ class SandboxieIntegrationTests(unittest.TestCase):
         self.sbie.create_sandbox(box='foo', options={'Enabled': 'yes'})
 
     def tearDown(self):
-        self.sbie.delete_contents(box='foo')
-        self.sbie.destroy_sandbox(box='foo')
+        try:
+            self.sbie.delete_contents(box='foo')
+            self.sbie.destroy_sandbox(box='foo')
+        except subprocess.CalledProcessError:
+            pass
 
     def test_start_command_fails_due_to_non_existent_sandbox(self):
         try:
